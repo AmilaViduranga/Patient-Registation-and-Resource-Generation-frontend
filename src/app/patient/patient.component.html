@@ -1,0 +1,235 @@
+<section>
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+      <div class="row">
+        <div class="col-sm-10">
+            <h1>Patient Panel</h1>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-primary btn-top" (click)="preAddNewPatient()">New Patient</button>
+        </div>
+      </div>
+      <table class="table table-striped" [mfData]="displayPatientsDetails" #mf="mfDataTable" [mfRowsOnPage]="20">
+        <thead>
+          <tr>
+              <th>
+                  <mfDefaultSorter by="patientNIC">NIC</mfDefaultSorter>
+              </th>
+              <th>
+                  <mfDefaultSorter by="patientFulName">Name</mfDefaultSorter>
+              </th>
+              <th>
+                  <mfDefaultSorter by="patientTitle">Title</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="telephoneNumber">Telephone</mfDefaultSorter>
+              </th>
+              <th>
+                  <mfDefaultSorter>Options</mfDefaultSorter>
+              </th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of mf.data">
+            <td>{{item.patientNIC}}</td>
+            <td>{{item.patientFulName}}</td>
+            <td>{{item.patientTitle}}</td>
+            <td>{{item.telephoneNumber}}</td>
+            <td>
+              <button class="btn btn-link" (click)="loadMoreDetails(item)">View More ...</button>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+              <td colspan="4">
+                  <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+              </td>
+          </tr>
+        </tfoot>
+    </table>
+    </div>
+    <div class="col-sm-1"></div>
+  </div>
+</section>
+
+<!-- view more options -->
+<section>
+  <div class="modal" tabindex="-1" role="dialog" id="viewMore">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{viewMorePatient.patientFulName}} Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Full Name</label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" [(ngModel)]="viewMorePatient.patientFulName" name="fullName">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Title</label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" [(ngModel)]="viewMorePatient.patientTitle" name="title">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Language</label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" [(ngModel)]="viewMorePatient.preferedLanguage" name="language">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Address</label>
+              <div class="col-sm-10">
+                <textarea rows="2" class="form-control-plaintext" [(ngModel)]="viewMorePatient.patientAddress" readonly name="address">
+                </textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">NIC</label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" [(ngModel)]="viewMorePatient.patientNIC" name="NIC">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Date of birth</label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" [(ngModel)]="viewMorePatient.dateOfBirth" name="DOB">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Telephone</label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" [(ngModel)]="viewMorePatient.telephoneNumber" name="telephone">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Gender</label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" [(ngModel)]="viewMorePatient.gender" name="Gender">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Civil Status</label>
+              <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" [(ngModel)]="viewMorePatient.civilStatus" name="civilStatus">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Add new patient -->
+<section>
+  <div class="modal" tabindex="-1" role="dialog" id="addNew">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{newPatient.patientFulName || 'New Patient'}} Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Full Name</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control-plaintext" [(ngModel)]="newPatient.patientFulName" name="fullName" placeholder="Patient's full name eg:- sam wickaramasinghe">
+              </div>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">User Name</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control-plaintext" [(ngModel)]="newPatient.patientUserName" name="user name" placeholder="Patient's user name eg:- sam123">
+                </div>
+              </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Title</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="sel1" [(ngModel)]="newPatient.patientTitle" name="title">
+                  <option value="Mr">Mr</option>
+                  <option value="Mrs">Mrs</option>
+                  <option value="Miss">Miss</option>
+                  <option value="Dr">Dr</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Language</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="sel1" [(ngModel)]="newPatient.preferedLanguage" name="language">
+                  <option value="Sinhala">Sinhala</option>
+                  <option value="English">English</option>
+                  <option value="Tamil">Tamil</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Address</label>
+              <div class="col-sm-10">
+                <textarea rows="2" class="form-control-plaintext" [(ngModel)]="newPatient.patientAddress"  name="address" placeholder="patient's local address">
+                </textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">NIC</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control-plaintext" [(ngModel)]="newPatient.patientNIC" name="NIC" placeholder="patient's full nic number">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Date of birth</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control-plaintext" [(ngModel)]="newPatient.dateOfBirth" name="DOB" placeholder="patient date of birth">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Telephone</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control-plaintext" [(ngModel)]="newPatient.telephoneNumber" name="telephone" placeholder="patient's phone number">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Gender</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="sel1" [(ngModel)]="newPatient.gender" name="Gender">
+                  <option value="Male">Male</option>
+                  <option value="FeMale">Female</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Civil Status</label>
+              <div class="col-sm-10">
+                <select class="form-control"  [(ngModel)]="newPatient.civilStatus" name="civilStatus">
+                  <option value="Single">Single</option>
+                  <option value="Maried">Maried</option>
+                  <option value="Engaged">Engaged</option>
+                  <option value="Devorced">Devorced</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="savePatientDetail()">Save</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+  
